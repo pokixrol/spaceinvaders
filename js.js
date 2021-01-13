@@ -1,13 +1,13 @@
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
-
+//***************************************************** 
 class Enemy {
     constructor(x, y, a,b){
-        this.x = x
-        this.y = y
-        this.a = a 
-        this.b = b 
+        this.x = x;
+        this.y = y;
+        this.a = a;
+        this.b = b;
 
     }
      paint (){
@@ -31,14 +31,32 @@ function pridejEnemy(){
     }
 
 }
-
+// ***********************************************
 class Bullet {
-    constructor(x, y, a,b){
-        this.x = x
-        this.y = y
-        this.a = a 
-        this.b = b 
+    constructor(x, y, a,b , speed){
+        this.x = x;
+        this.y = y;
+        this.a = a; 
+        this.b = b;
+        this.speed = speed ;
     }
+
+    paint () {
+        ctx.fillStyle = 'blue';
+        ctx.fillRect(this.x, this.y, this.a, this.b );
+    }
+
+    move () {
+        this.y -= this.speed;
+    }
+}
+
+let bullets = [];
+
+function pridejBullet() {
+  bullets.push(new Bullet(strelec.x, strelec.y, 10, 10,3));
+  bullets.paint();
+  bullets.move();
 }
 
 //*******************************************
@@ -61,7 +79,6 @@ let game = {
     timer: null,
     activeBullet: null,
     play: function() {
-        //this.activeBullet = new Bullet();    
         this.timer = setInterval(function() {
             game.repaint();
         }, 20);    
@@ -70,11 +87,7 @@ let game = {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         strelec.paint();
         pridejEnemy();
-        bullet.paintbullet();
-        //this.game.activeBullet.bullets.forEach(function(shot){
-           
-
-       // });
+        pridejBullet();
     }
 }
 // **********************************************
@@ -88,16 +101,11 @@ document.addEventListener('keydown', function(event){
             break;
             
         case 'Space': 
-        // game.activeBullet.bullets.push({x: strelec.x +40,y: strelec.y - 20,a: 20,b: 20})
-         let bullet = {
-             paintbullet: function (){
-                ctx.fillStyle = 'blue';
-                ctx.fillRect(strelec.x +40, strelec.y - 20, 20, 20);
-             }
-         }
+    
             break;
         }
     
     
     });
+//****************************************************
     game.play();
