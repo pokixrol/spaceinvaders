@@ -8,21 +8,22 @@ class Enemy {
     this.y = y;
     this.a = a;
     this.b = b;
+    this.img = new Image();
+    this.img.src = 'img/e.png';
   }
   paint() {
-    ctx.fillStyle = "red";
-    ctx.fillRect(this.x, this.y, this.a, this.b);
+    ctx.drawImage(this.img, this.x, this.y, this.a, this.b);
   }
 }
 
-let enemy1 = new Enemy(10, 10, 100, 50);
+let enemy1 = new Enemy(10, 10, 100, 75);
 
 let enemies = [];
 
 function pridejEnemy() {
   let pomoc = 10;
   for (i = 0; i <= 9; i++) {
-    enemies.push(new Enemy(pomoc, 10, 100, 50));
+    enemies.push(new Enemy(pomoc, 10, 100, 75));
     enemies[i].paint();
     pomoc += 110;
   }
@@ -38,7 +39,7 @@ class Bullet {
   }
 
   paint() {
-    ctx.fillStyle = "blue";
+    ctx.fillStyle = "black";
     ctx.fillRect(this.x, this.y, this.a, this.b);
   }
 
@@ -56,10 +57,15 @@ let strelec = {
   a: 100,
   b: 50,
   sensitivity: 10,
+  img: new Image(),
+  
+  init: function(){
+ this.img.src = 'img/p.png';
+  },
 
   paint: function () {
-    ctx.fillStyle = "black";
-    ctx.fillRect(this.x, this.y, this.a, this.b);
+    
+    ctx.drawImage(this.img, this.x, this.y, this.a, this.b);
   },
 };
 
@@ -74,6 +80,7 @@ let game = {
 
   repaint: function () {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    strelec.init();
     strelec.paint();
     pridejEnemy();
     document.addEventListener("click", function () {
@@ -83,6 +90,18 @@ let game = {
         bullets[i].paint();
         bullets[i].move();
       }
+      if(detectCollisionCircleSquare(bullets, enemies)){
+      bullets.splice();
+      enemies.splice();
+      }
+    /*  bullets.forEach(function(bullet, index){
+        bullets.paint();
+        bullets.move();
+        if(detectCollisionCircleSquare(bullet,enemies)){
+          bullets.splice (index);
+           enemies.splice (index);
+        }
+      });*/
   },
 };
 // **********************************************
