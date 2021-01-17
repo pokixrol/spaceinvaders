@@ -52,7 +52,7 @@ let bullets = [];
 
 //*******************************************
 let strelec = {
-  x: canvas.width / 2,
+  x: (canvas.width / 2) -50,
   y: canvas.height - 50,
   a: 100,
   b: 50,
@@ -83,26 +83,19 @@ let game = {
     strelec.init();
     strelec.paint();
     pridejEnemy();
-    document.addEventListener("click", function () {
-      bullets.push(new Bullet(strelec.x + 50, strelec.y - 10, 10, 10, 3));
+    
+    bullets.forEach(function(bullet, i, bullet_array){
+        bullet.paint();
+        bullet.move();
+        enemies.forEach(function(enemy, index, enemy_array) {
+          if(detectCollisionRectRect(bullet, enemy)){
+            bullet_array.splice(i,1);
+            enemy_array.splice(index, 1);
+          }  
+        });
     });
-    for(i = 0; i  <= bullets.length; i++){
-        bullets[i].paint();
-        bullets[i].move();
-      }
-      if(detectCollisionCircleSquare(bullets, enemies)){
-      bullets.splice();
-      enemies.splice();
-      }
-    /*  bullets.forEach(function(bullet, index){
-        bullets.paint();
-        bullets.move();
-        if(detectCollisionCircleSquare(bullet,enemies)){
-          bullets.splice (index);
-           enemies.splice (index);
-        }
-      });*/
-  },
+       
+      },
 };
 // **********************************************
 document.addEventListener("keydown", function (event) {
@@ -114,6 +107,9 @@ document.addEventListener("keydown", function (event) {
       strelec.x += strelec.sensitivity;
       break;
   }
+});
+document.addEventListener("click", function () {
+  bullets.push(new Bullet(strelec.x + 50, strelec.y - 10, 10, 10, 3));
 });
 //****************************************************
 game.play();
